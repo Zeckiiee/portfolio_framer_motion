@@ -97,79 +97,109 @@ function Hero() {
     visible: {
       opacity: 1,
       transition: {
-      duration: 0.5,
-      staggerChildren: .05
+        duration: 0.5,
+        staggerChildren: .02
+      },
     },
-    },
-    
   };
 
-const childVariant = {
-  hidden:{opacity: 0, x:100},
-  visible:{
-    opacity: 1, x:0,
-    transition:{
-    duration:1,
-    ease: "easeInOut"
+  const childVariant = {
+    hidden: { opacity: 0, x: 100 },
+    visible: {
+      opacity: 1, x: 0,
+      transition: {
+        duration: 0.1,
+        ease: "easeInOut"
+      }
+    },
   }
-  },
-  
-}
+
+  const textElementVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50
+    },
+
+    visible: (d) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: d,
+        duration: 0.1,
+        ease: "easeOut"
+      }
+    })
+  }
 
   function splitName(name) {
-    return name.split(""); // gagawin array bawat letter
+    return name.split("");
   }
-
-  const arrayName = splitName("Ezeckiel Bongala");
 
   return (
     <section
       aria-labelledby="hero-title"
-      className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800"
+      className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 flex justify-center items-center h-screen w-full"
     >
-      <div className="mx-auto max-w-6xl px-4 py-16 md:py-20">
-        <motion.h1
-          variants={parentVariant}
-          initial="hidden"
-          animate="visible"
-          id="hero-title"
-          className="text-3xl md:text-5xl font-extrabold tracking-tight text-white"
-        >
-          {arrayName.map((char, index) => (
-            <motion.span
-              variants={childVariant}
-              key={index}
-              className="inline-block"
-              
+
+      <div className="w-[60%] flex items-center justify-between">
+        <div className="relative">
+          <motion.h1
+            className="text-3xl md:text-5xl font-extrabold tracking-tight text-white absolute bottom-[11rem]"
+            initial={{x:200, fontSize:'5rem', scale: 2}}
+            animate={{x:0, scale:1, fontSize: '3rem'}}
+            transition={{
+              fontSize : {duration: 1, delay:0.5},
+              scale: {duration: 1, delay: 0.5},
+              x: {duration:0.5, delay: 1}
+            }}
+          >
+            Ezeckiel Bongala
+          </motion.h1>
+
+
+          <motion.p
+            custom={1.2}
+            initial="hidden"
+            animate="visible"
+            variants={textElementVariants}
+            className="mt-2 text-lg md:text-2xl text-blue-300">
+            Front-End Developer
+          </motion.p>
+          <motion.p
+            custom={1.4}
+            initial="hidden"
+            animate="visible"
+            variants={textElementVariants}
+            className="mt-5 max-w-2xl text-slate-300">
+            Building modern web applications with passion and precision. I blend
+            strong fundamentals with business-focused thinking to deliver
+            reliable, scalable, and accessible software.
+          </motion.p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <motion.a
+              custom={1.6}
+              initial="hidden"
+              animate="visible"
+              variants={textElementVariants}
+              href="#projects"
+              className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium ring-1 ring-blue-700 bg-blue-900 text-slate-100"
             >
-              {char === " " ? "\u00A0" : char}
-              {/* kung space, palitan ng non-breaking space */}
-            </motion.span>
-          ))}
-        </motion.h1>
-        <p className="mt-2 text-lg md:text-2xl text-blue-300">
-          Front-End Developer
-        </p>
-        <p className="mt-5 max-w-2xl text-slate-300">
-          Building modern web applications with passion and precision. I blend
-          strong fundamentals with business-focused thinking to deliver
-          reliable, scalable, and accessible software.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <a
-            href="#projects"
-            className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium ring-1 ring-blue-700 bg-blue-900 text-slate-100"
-          >
-            View Projects
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium ring-1 ring-slate-700 text-slate-200"
-          >
-            Get in Touch
-          </a>
+              View Projects
+            </motion.a>
+            <motion.a
+              custom={1.8}
+              initial="hidden"
+              animate="visible"
+              variants={textElementVariants}
+              href="#contact"
+              className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium ring-1 ring-slate-700 text-slate-200"
+            >
+              Get in Touch
+            </motion.a>
+          </div>
         </div>
       </div>
+
     </section>
   );
 }
@@ -178,7 +208,13 @@ function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="bg-slate-950">
       <div className="mx-auto max-w-6xl px-4 py-16">
-        <header className="mb-8">
+        <motion.header
+          className="mb-8"
+          initial={{ y: 20, x: 20, opacity: 0 }}
+          whileInView={{ y: 0, x: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 1 }}
+        >
           <h2
             id="about-title"
             className="text-2xl md:text-3xl font-bold text-white"
@@ -188,48 +224,81 @@ function About() {
           <p className="mt-2 text-sm text-slate-400">
             Professional summary and background
           </p>
-        </header>
+        </motion.header>
         <div className="grid gap-8 md:grid-cols-3">
+
           <div className="md:col-span-2 space-y-4 text-slate-300 leading-relaxed">
-            <p>
+            <motion.p
+              initial={{ y: 20, x: 20, opacity: 0 }}
+              whileInView={{ y: 0, x: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true, amount: 1 }}
+            >
               Results-driven full stack developer with a pragmatic approach to
               building software that ships. Experienced across the stack—from
               accessible, responsive UIs to reliable APIs and data layers.
               Comfortable collaborating with designers, product managers, and
               stakeholders to turn ideas into measurable impact.
-            </p>
-            <p>
+            </motion.p>
+            <motion.p
+              initial={{ y: 20, x: 20, opacity: 0 }}
+              whileInView={{ y: 0, x: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true, amount: 1 }}
+            >
               Known for clean, maintainable code, thoughtful code reviews, and a
               strong testing culture. I enjoy breaking down complex problems,
               choosing the simplest solution that works, and documenting
               decisions so teams can move fast with confidence.
-            </p>
-            <p>
+            </motion.p>
+            <motion.p
+              initial={{ y: 20, x: 20, opacity: 0 }}
+              whileInView={{ y: 0, x: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true, amount: 1 }}
+            >
               Outside of code, I mentor junior developers, champion
               accessibility best practices, and continually refine tooling for
               performance and developer experience.
-            </p>
+            </motion.p>
           </div>
+
           <aside className="space-y-4">
             <dl className="grid grid-cols-1 gap-4">
-              <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+              <motion.div className="rounded-xl border border-slate-800 bg-slate-900 p-4"
+                initial={{ x: 100, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true, amount: 1 }}
+              >
                 <dt className="text-sm text-slate-400">Experience</dt>
                 <dd className="text-lg font-semibold text-white">5+ years</dd>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+              </motion.div>
+              <motion.div className="rounded-xl border border-slate-800 bg-slate-900 p-4"
+                initial={{ x: 100, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true, amount: 1 }}
+              >
                 <dt className="text-sm text-slate-400">Location</dt>
                 <dd className="text-lg font-semibold text-white">
                   San Francisco, CA
                 </dd>
-              </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+              </motion.div>
+              <motion.div className="rounded-xl border border-slate-800 bg-slate-900 p-4"
+                initial={{ x: 100, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true, amount: 1 }}
+              >
                 <dt className="text-sm text-slate-400">Availability</dt>
                 <dd className="text-lg font-semibold text-white">
                   Open to opportunities
                 </dd>
-              </div>
+              </motion.div>
             </dl>
           </aside>
+
         </div>
       </div>
     </section>
