@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { motion, stagger } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform
+} from "framer-motion";
+import myAvatar from "../assets/myAvatar.png";
 // Single-file, production-ready portfolio built with
 // React functional components + Tailwind CSS (no animations)
 // Theme: Dark blue / navy
@@ -92,13 +97,17 @@ function Header() {
 }
 
 function Hero() {
+  const { scrollY } = useScroll()
+  // const y1 = useTransform(scrollY, [0, 500], [0, 50]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -70]);
+
   const parentVariant = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         duration: 0.5,
-        staggerChildren: .02
+        staggerChildren: 0.02,
       },
     },
   };
@@ -106,18 +115,19 @@ function Hero() {
   const childVariant = {
     hidden: { opacity: 0, x: 100 },
     visible: {
-      opacity: 1, x: 0,
+      opacity: 1,
+      x: 0,
       transition: {
         duration: 0.1,
-        ease: "easeInOut"
-      }
+        ease: "easeInOut",
+      },
     },
-  }
+  };
 
   const textElementVariants = {
     hidden: {
       opacity: 0,
-      y: 50
+      y: 50,
     },
 
     visible: (d) => ({
@@ -126,10 +136,10 @@ function Hero() {
       transition: {
         delay: d,
         duration: 0.1,
-        ease: "easeOut"
-      }
-    })
-  }
+        ease: "easeOut",
+      },
+    }),
+  };
 
   function splitName(name) {
     return name.split("");
@@ -140,29 +150,19 @@ function Hero() {
       aria-labelledby="hero-title"
       className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 flex justify-center items-center h-screen w-full"
     >
-
-      <div className="w-[60%] flex items-center justify-between">
+      <div className="w-[70%] flex items-center justify-between">
         <div className="relative">
-          <motion.h1
-            className="text-3xl md:text-5xl font-extrabold tracking-tight text-white absolute bottom-[11rem]"
-            initial={{x:200, fontSize:'5rem', scale: 2}}
-            animate={{x:0, scale:1, fontSize: '3rem'}}
-            transition={{
-              fontSize : {duration: 1, delay:0.5},
-              scale: {duration: 1, delay: 0.5},
-              x: {duration:0.5, delay: 1}
-            }}
-          >
+          <motion.h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
             Ezeckiel Bongala
           </motion.h1>
-
 
           <motion.p
             custom={1.2}
             initial="hidden"
             animate="visible"
             variants={textElementVariants}
-            className="mt-2 text-lg md:text-2xl text-blue-300">
+            className="mt-2 text-lg md:text-2xl text-blue-300"
+          >
             Front-End Developer
           </motion.p>
           <motion.p
@@ -170,7 +170,8 @@ function Hero() {
             initial="hidden"
             animate="visible"
             variants={textElementVariants}
-            className="mt-5 max-w-2xl text-slate-300">
+            className="mt-5 max-w-2xl text-slate-300"
+          >
             Building modern web applications with passion and precision. I blend
             strong fundamentals with business-focused thinking to deliver
             reliable, scalable, and accessible software.
@@ -198,8 +199,31 @@ function Hero() {
             </motion.a>
           </div>
         </div>
+        <div className="relative">
+          <motion.div
+            initial={{ y: 50 }}
+            animate={{ y: 0 }}
+            ease={{}}
+            transition={{
+              duration: 0.8,
+            }}
+            
+            className="max-w-[400px] h-[450px] bg-[#111A2B] inset-0  absolute top-[-3.1rem] rounded-t-full"
+          ></motion.div>
+          <motion.img
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.5,
+            }}
+            style={{ y: y2 }}
+            src={myAvatar}
+            className="max-w-[300px] relative  block bg-transparent"
+            alt=""
+          />
+        </div>
       </div>
-
     </section>
   );
 }
@@ -226,7 +250,6 @@ function About() {
           </p>
         </motion.header>
         <div className="grid gap-8 md:grid-cols-3">
-
           <div className="md:col-span-2 space-y-4 text-slate-300 leading-relaxed">
             <motion.p
               initial={{ y: 20, x: 20, opacity: 0 }}
@@ -265,7 +288,8 @@ function About() {
 
           <aside className="space-y-4">
             <dl className="grid grid-cols-1 gap-4">
-              <motion.div className="rounded-xl border border-slate-800 bg-slate-900 p-4"
+              <motion.div
+                className="rounded-xl border border-slate-800 bg-slate-900 p-4"
                 initial={{ x: 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -274,7 +298,8 @@ function About() {
                 <dt className="text-sm text-slate-400">Experience</dt>
                 <dd className="text-lg font-semibold text-white">5+ years</dd>
               </motion.div>
-              <motion.div className="rounded-xl border border-slate-800 bg-slate-900 p-4"
+              <motion.div
+                className="rounded-xl border border-slate-800 bg-slate-900 p-4"
                 initial={{ x: 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -285,7 +310,8 @@ function About() {
                   San Francisco, CA
                 </dd>
               </motion.div>
-              <motion.div className="rounded-xl border border-slate-800 bg-slate-900 p-4"
+              <motion.div
+                className="rounded-xl border border-slate-800 bg-slate-900 p-4"
                 initial={{ x: 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -298,7 +324,6 @@ function About() {
               </motion.div>
             </dl>
           </aside>
-
         </div>
       </div>
     </section>
