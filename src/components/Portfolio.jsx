@@ -98,8 +98,7 @@ function Header() {
 
 function Hero() {
   const { scrollY } = useScroll()
-  // const y1 = useTransform(scrollY, [0, 500], [0, 50]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -70]);
+  const y1 = useTransform(scrollY, [0, 500], [0, 70]);
 
   const parentVariant = {
     hidden: { opacity: 0 },
@@ -151,7 +150,9 @@ function Hero() {
       className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 flex justify-center items-center h-screen w-full"
     >
       <div className="w-[70%] flex items-center justify-between">
-        <div className="relative">
+        <motion.div
+          style={{ y: y1 }}
+          className="relative">
           <motion.h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
             Ezeckiel Bongala
           </motion.h1>
@@ -198,26 +199,28 @@ function Hero() {
               Get in Touch
             </motion.a>
           </div>
-        </div>
+        </motion.div>
         <div className="relative">
           <motion.div
-            initial={{ y: 50 }}
-            animate={{ y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             ease={{}}
+
             transition={{
               duration: 0.8,
             }}
-            
+            style={{ y: y1 }}
+
             className="max-w-[400px] h-[450px] bg-[#111A2B] inset-0  absolute top-[-3.1rem] rounded-t-full"
           ></motion.div>
           <motion.img
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{
               duration: 0.8,
-              delay: 0.5,
+              delay: 0.8,
             }}
-            style={{ y: y2 }}
+            style={{ y: y1 }}
             src={myAvatar}
             className="max-w-[300px] relative  block bg-transparent"
             alt=""
