@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import {
   motion,
   useScroll,
-  useTransform
+  useTransform,
+  useMotionValue,
+  useAnimation,
 } from "framer-motion";
 import myAvatar from "../assets/myAvatar.png";
 // Single-file, production-ready portfolio built with
@@ -97,7 +99,7 @@ function Header() {
 }
 
 function Hero() {
-  const { scrollY } = useScroll()
+  const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 70]);
 
   const parentVariant = {
@@ -150,9 +152,7 @@ function Hero() {
       className="bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 flex justify-center items-center h-screen w-full"
     >
       <div className="w-[70%] flex items-center justify-between">
-        <motion.div
-          style={{ y: y1 }}
-          className="relative">
+        <motion.div style={{ y: y1 }} className="relative">
           <motion.h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
             Ezeckiel Bongala
           </motion.h1>
@@ -205,12 +205,10 @@ function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             ease={{}}
-
             transition={{
               duration: 0.8,
             }}
             style={{ y: y1 }}
-
             className="max-w-[400px] h-[450px] bg-[#111A2B] inset-0  absolute top-[-3.1rem] rounded-t-full"
           ></motion.div>
           <motion.img
@@ -228,6 +226,81 @@ function Hero() {
         </div>
       </div>
     </section>
+  );
+}
+function Draggable() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0); 
+  const controls = useAnimation();
+  const THRESHOLD = 150; 
+
+  function handleDragEnd(_, info) {
+    
+    const currentX = x.get();
+    const currentY = y.get();
+
+    const distance = Math.hypot(currentX, currentY);
+    console.log(
+      "currentX:",
+      currentX,
+      "currentY:",
+      currentY,
+      "info.offset:",
+      info.offset,
+      "distance:",
+      distance
+    );
+
+    if (distance >= THRESHOLD) {
+     
+      controls.start({
+        x: 0,
+        y: 0,
+        transition: { type: "spring", stiffness: 420, damping: 16 },
+      });
+    } else {
+
+      controls.start({
+        x: 0,
+        y: 0,
+        transition: { type: "spring", stiffness: 180, damping: 20 },
+      });
+    }
+  }
+
+ 
+
+  return (
+    <div style={{ height: "100vh", display: "grid", placeItems: "left" }}>
+      <div className="max-w-[10rem] border-white border-[1px] overflow-hidden">
+        <motion.div
+          style={{
+            x,
+            y,
+            width: 180,
+            height: 160,
+            borderRadius: 14,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "grab",
+            userSelect: "none",
+            boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+            backgroundColor: "green",
+            marginTop: "2rem",
+          }}
+          drag={true} 
+          dragElastic={1}
+          onDragEnd={handleDragEnd}
+          animate={controls}
+          whileTap={{ scale: 0.98, cursor: "grabbing" }}
+          role="button"
+          tabIndex={0}
+        >
+          DRAG
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -371,6 +444,7 @@ function Skills() {
             Core technologies and tools
           </p>
         </header>
+
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {groups.map((g) => (
             <div
@@ -600,6 +674,7 @@ export default function Portfolio() {
       <Header />
       <main id="main">
         <Hero />
+        <Draggable />
         <About />
         <Skills />
         <Projects />
